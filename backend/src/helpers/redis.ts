@@ -1,8 +1,9 @@
 import { Redis } from "@upstash/redis";
+import { config } from "./config.js";
 
 const redis = new Redis({
-  url: "https://top-aphid-28802.upstash.io",
-  token: "AXCCAAIjcDE1ODk3NDMyNjRhNDA0OWU1YWIzOTk5ZmNlOGU1NTY1NHAxMA",
+  url: config.redisUrl,
+  token: config.redisToken,
 });
 
 export default redis;
