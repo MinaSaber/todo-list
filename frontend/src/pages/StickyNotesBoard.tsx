@@ -30,29 +30,33 @@ const SkeletonLoader = () => (
   </div>
 );
 
-const StickyNotesBoard = () => {
+export const StickyNotesBoard = () => {
   const { todayTasks, tomorrowTasks, upcomingTasks } =
     useOutletContext<ContextType>();
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (
-      todayTasks.length > 0 ||
-      tomorrowTasks.length > 0 ||
-      upcomingTasks.length > 0
-    ) {
-      setLoading(false);
-    }
+    setLoading(false); // Always set loading to false after initial render
   }, [todayTasks, tomorrowTasks, upcomingTasks]);
 
   const tasks = [...todayTasks, ...tomorrowTasks, ...upcomingTasks];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-6">
-      {loading
-        ? [...Array(4)].map((_, idx) => <SkeletonLoader key={idx} />)
-        : tasks.map((task, idx) => (
+    <div className="p-6">
+      {loading ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, idx) => (
+            <SkeletonLoader key={idx} />
+          ))}
+        </div>
+      ) : tasks.length === 0 ? (
+        <div className="text-center text-gray-500 text-lg mt-12">
+          No tasks to display.
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {tasks.map((task, idx) => (
             <div
               key={idx}
               className={`p-4 rounded-md shadow-sm ${getRandomColor()} whitespace-pre-line`}
@@ -61,8 +65,8 @@ const StickyNotesBoard = () => {
               <p className="text-sm">{task.description}</p>
             </div>
           ))}
+        </div>
+      )}
     </div>
   );
 };
-
-export default StickyNotesBoard;

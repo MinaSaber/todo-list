@@ -5,6 +5,7 @@ import { Task } from "../types/dtos";
 import { TaskStatus } from "../types/task-status.enum";
 import { TaskPriority } from "../types/task-priority.enum";
 import { toast, ToastContainer } from "react-toastify";
+import { FaSpinner } from "react-icons/fa";
 
 const AddTaskModal = ({
   show,
@@ -25,6 +26,7 @@ const AddTaskModal = ({
     priority: "",
     status: TaskStatus.PENDING,
   });
+  const [saving, setSaving] = useState(false);
 
   if (!show) return null;
 
@@ -38,6 +40,7 @@ const AddTaskModal = ({
   };
 
   const createTask = async () => {
+    setSaving(true);
     try {
       const res = await addTask(task);
       onSave(res);
@@ -49,6 +52,8 @@ const AddTaskModal = ({
       } else {
         toast.error("An unexpected error occurred.");
       }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -169,17 +174,20 @@ const AddTaskModal = ({
             Cancel
           </button>
           <button
-            onClick={() => {
-              createTask();
-            }}
-            disabled={isFormInvalid()}
-            className={`px-5 py-2 rounded-lg text-white font-semibold shadow-sm transition cursor-pointer ${
-              isFormInvalid()
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-yellow-400 hover:bg-yellow-500"
-            }`}
+            onClick={createTask}
+            disabled={isFormInvalid() || saving}
+            className={`w-full text-white font-semibold py-3 rounded-lg transition
+    ${
+      isFormInvalid() || saving
+        ? "bg-gray-300 cursor-not-allowed"
+        : "bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+    }`}
           >
-            Save Task
+            {saving ? (
+              <FaSpinner className="animate-spin mx-auto" />
+            ) : (
+              "Save Task"
+            )}
           </button>
         </div>
       </div>

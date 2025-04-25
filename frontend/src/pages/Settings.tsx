@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "../context/auth-context";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { FaSpinner } from "react-icons/fa";
 
 const SettingsPage = () => {
   const { user } = useAuth();
@@ -14,12 +15,14 @@ const SettingsPage = () => {
     phone: user.phone,
   });
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSave = async () => {
+    setSaving(true);
     try {
       await updateUser(user.id, formData);
     } catch (err: any) {
@@ -30,6 +33,7 @@ const SettingsPage = () => {
       }
       return;
     } finally {
+      setSaving(false);
       setEditMode(false);
     }
   };
@@ -71,7 +75,6 @@ const SettingsPage = () => {
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-semibold text-gray-800 mb-6">Settings</h2>
 
-        {/* User Info Display */}
         {!editMode ? (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
@@ -110,7 +113,6 @@ const SettingsPage = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Name Field */}
             <div>
               <label
                 htmlFor="name"
@@ -128,7 +130,6 @@ const SettingsPage = () => {
               />
             </div>
 
-            {/* Email Field */}
             <div>
               <label
                 htmlFor="email"
@@ -146,7 +147,6 @@ const SettingsPage = () => {
               />
             </div>
 
-            {/* Phone Field */}
             <div>
               <label
                 htmlFor="phone"
@@ -173,9 +173,20 @@ const SettingsPage = () => {
               </button>
               <button
                 onClick={handleSave}
-                className="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition"
+                disabled={saving}
+                className={`px-6 py-2 text-white rounded-lg shadow-md transition flex items-center justify-center gap-2
+    ${
+      saving
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-yellow-500 hover:bg-yellow-600"
+    }
+  `}
               >
-                Save Changes
+                {saving ? (
+                  <FaSpinner className="animate-spin" />
+                ) : (
+                  "Save Changes"
+                )}
               </button>
             </div>
           </div>

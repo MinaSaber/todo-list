@@ -11,7 +11,7 @@ import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./context/auth-context";
 import Dashboard from "./pages/Dashboard";
 import Today from "./pages/Today";
-import StickyNotesBoard from "./pages/StickyNotesBoard";
+import { StickyNotesBoard } from "./pages/StickyNotesBoard";
 import TasksList from "./components/TasksList";
 import Settings from "./pages/Settings";
 import AllTasksPage from "./pages/AllTasks";
