@@ -5,7 +5,7 @@ import { regexes } from "../utils/regexes";
 import { LoginForm } from "../types/dtos";
 import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "../context/auth-context";
-import { FaSpinner } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 
 const Login = () => {
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
@@ -13,6 +13,7 @@ const Login = () => {
     {}
   );
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
@@ -92,9 +93,9 @@ const Login = () => {
               <p className="text-red-500 text-sm">{errors.email}</p>
             )}
           </div>
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
               value={form.password}
@@ -102,6 +103,12 @@ const Login = () => {
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
             />
+            <div
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
             )}

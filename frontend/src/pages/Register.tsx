@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import { RegisterForm } from "../types/dtos";
-import { FaSpinner } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 
 const Register = () => {
   const [form, setForm] = useState<RegisterForm>({
@@ -16,6 +16,7 @@ const Register = () => {
   const [errors, setErrors] = useState<Partial<typeof form>>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -122,9 +123,9 @@ const Register = () => {
               <p className="text-red-500 text-sm">{errors.phone}</p>
             )}
           </div>
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
               value={form.password}
@@ -132,6 +133,12 @@ const Register = () => {
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
             />
+            <div
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
             )}
