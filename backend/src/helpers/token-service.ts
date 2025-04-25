@@ -27,7 +27,7 @@ export const TokenService = {
     res.clearCookie("token", {
       httpOnly: true,
       secure: config.nodeEnv === "production",
-      sameSite: "lax",
+      sameSite: "none",
     });
   },
 };
