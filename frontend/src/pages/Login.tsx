@@ -5,12 +5,14 @@ import { regexes } from "../utils/regexes";
 import { LoginForm } from "../types/dtos";
 import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "../context/auth-context";
+import { FaSpinner } from "react-icons/fa";
 
 const Login = () => {
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
@@ -44,6 +46,8 @@ const Login = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       await login(form.email, form.password);
       const { data } = await getProfile();
@@ -57,6 +61,7 @@ const Login = () => {
       }
       return;
     } finally {
+      setLoading(false);
       setErrors({});
     }
   };
@@ -103,15 +108,19 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            disabled={!form.email || !form.password}
+            disabled={!form.email || !form.password || loading}
             className={`w-full text-white font-semibold py-3 rounded-lg transition
               ${
-                !form.email || !form.password
+                !form.email || !form.password || loading
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-amber-400 hover:bg-amber-500 cursor-pointer"
               }`}
           >
-            Sign in
+            {loading ? (
+              <FaSpinner className="animate-spin mx-auto" />
+            ) : (
+              "Sign in"
+            )}
           </button>
         </form>
 

@@ -30,7 +30,7 @@ export const AuthController = {
 
       const token = await AuthService.login(userData);
 
-      TokenService.setTokenCookie(token, res);
+      await TokenService.setTokenCookie(token, res);
 
       res.status(200).json("User logged in successfully.");
     } catch (error: any) {

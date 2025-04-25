@@ -14,8 +14,8 @@ export const TokenService = {
     return jwt.sign(payload, config.jwtSecret, { expiresIn: "1h" });
   },
 
-  setTokenCookie(token: string, res: Response) {
-    res.cookie("token", token, {
+  async setTokenCookie(token: string, res: Response) {
+    return res.cookie("token", token, {
       httpOnly: true,
       secure: config.nodeEnv === "production",
       maxAge: 86400000,

@@ -15,7 +15,7 @@ const loginLimiter = rateLimit({
 
 router.post(
   "/login",
-  loginLimiter,
+  // loginLimiter,
   validate(LoginSchema),
   AuthController.login
 );

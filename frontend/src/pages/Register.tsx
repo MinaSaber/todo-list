@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import { RegisterForm } from "../types/dtos";
+import { FaSpinner } from "react-icons/fa";
 
 const Register = () => {
   const [form, setForm] = useState<RegisterForm>({
@@ -13,6 +14,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState<Partial<typeof form>>({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,8 @@ const Register = () => {
       !form.name.trim() ||
       !form.email.trim() ||
       !form.password.trim() ||
-      !form.phone.trim()
+      !form.phone.trim() ||
+      loading
     );
   };
 
@@ -52,6 +55,8 @@ const Register = () => {
     e.preventDefault();
     if (!validate()) return;
 
+    setLoading(true);
+
     try {
       await register(form.name, form.email, form.password, form.phone);
       toast.success("Registered successfully!");
@@ -62,7 +67,8 @@ const Register = () => {
       } else {
         toast.error("An unexpected error occurred.");
       }
-      return;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -141,7 +147,11 @@ const Register = () => {
                   : "bg-amber-400 hover:bg-amber-500 cursor-pointer"
               }`}
           >
-            Sign up
+            {loading ? (
+              <FaSpinner className="animate-spin mx-auto" />
+            ) : (
+              "Sign up"
+            )}
           </button>
         </form>
 
