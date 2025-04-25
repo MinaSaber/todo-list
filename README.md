@@ -63,8 +63,8 @@
 1.  **Clone the Repository:**
 
     ```bash
-    git clone <repository-link>
-    cd todo-list-app
+    git clone https://github.com/MinaSaber/todo-list
+    cd To-Do
     ```
 
     Install Dependencies:
