@@ -15,10 +15,11 @@ export const TokenService = {
   },
 
   async setTokenCookie(token: string, res: Response) {
-    return res.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: config.nodeEnv === "production",
-      maxAge: 86400000,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24,
     });
   },
 

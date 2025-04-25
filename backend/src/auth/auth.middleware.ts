@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import {
-  BadRequestException,
-  UnauthorizedException,
-} from "../exceptions/index.js";
+import { UnauthorizedException } from "../exceptions/index.js";
 import { config } from "../helpers/config.js";
 
 export default function AuthMiddleware(
