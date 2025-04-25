@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon",
     "dev": "nodemon",
-    "build": "tsc",
+    "build": "vite build",
     "serve": "node dist/index.js"
   },
   "keywords": [],
