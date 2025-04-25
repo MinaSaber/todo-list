@@ -6,7 +6,7 @@ import { TaskDto } from "./task.schema.js";
 
 export const TaskService = {
   async createTask(userId: string, taskData: TaskDto) {
-    if (taskData.listId) {
+    if (taskData.listId && taskData.listId.trim() !== "") {
       const listExists = await ListsService.isListExist(
         userId,
         taskData.listId
@@ -14,6 +14,8 @@ export const TaskService = {
       if (!listExists) {
         throw new NotFoundException("List does not exist.");
       }
+    } else {
+      delete taskData.listId;
     }
     return Task.create({
       userId,

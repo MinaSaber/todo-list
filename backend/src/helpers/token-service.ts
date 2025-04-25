@@ -18,7 +18,7 @@ export const TokenService = {
     res.cookie("token", token, {
       httpOnly: true,
       secure: config.nodeEnv === "production",
-      sameSite: "none",
+      sameSite: config.nodeEnv === "production" ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24,
     });
   },
@@ -27,7 +27,7 @@ export const TokenService = {
     res.clearCookie("token", {
       httpOnly: true,
       secure: config.nodeEnv === "production",
-      sameSite: "none",
+      sameSite: config.nodeEnv === "production" ? "none" : "lax",
     });
   },
 };
