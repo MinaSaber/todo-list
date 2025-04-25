@@ -24,6 +24,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+  res.status(200).send("Hello, world!");
+});
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/tasks", taskRouter);
